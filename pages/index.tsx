@@ -17,16 +17,37 @@ interface IMovieProps {
 export default function Home({ movies }: InferGetServerSidePropsType<GetServerSideProps>) {
 	const router = useRouter();
 	// Navigating 1. Link  2. router.push
-	const onClick = (id: number) => {
-		router.push(`/movies/${id}`);
+	const onClick = (id: number, title: string, poster_path: string) => {
+		router.push(
+			{
+				pathname: `/movies/${id}`,
+				query: {
+					title,
+					poster_path,
+				},
+			},
+			// Url masking
+			`/movies/${id}`,
+		);
 	};
 	return (
 		<div className="container">
 			<Seo title="Home" />
 			{!movies && <h4>Loading</h4>}
 			{movies?.map((movie: IMovieProps) => (
-				<Link href={`/movies/${movie.id}`} key={movie.id}>
-					<div onClick={() => onClick(movie.id)} className="movie">
+				<Link
+					href={{
+						pathname: `/movies/${movie.id}`,
+						query: {
+							title: movie.title,
+							poster_path: movie.poster_path,
+						},
+					}}
+					// Url masking
+					as={`/movies/${movie.id}`}
+					key={movie.id}
+				>
+					<div onClick={() => onClick(movie.id, movie.title, movie.poster_path)} className="movie">
 						<img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
 						<h4>{movie.original_title}</h4>
 					</div>
