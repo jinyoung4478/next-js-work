@@ -1,13 +1,13 @@
-import Head from "next/head";
+import Head from 'next/head';
 
 interface ISeo {
-  title: string;
+	title: string;
 }
 
 export default function Seo({ title }: ISeo) {
-  return (
-    <Head>
-      <title>{title} | Next Movies</title>
-    </Head>
-  );
+	return (
+		<Head>
+			<title>{title} | Next Movies</title>
+		</Head>
+	);
 }
