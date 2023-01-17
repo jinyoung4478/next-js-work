@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import Seo from '@/components/Seo';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { useRouter } from 'next/router';
 
 interface IMovieProps {
 	id: number;
@@ -13,22 +15,22 @@ interface IMovieProps {
 }
 
 export default function Home({ movies }: InferGetServerSidePropsType<GetServerSideProps>) {
-	// const [movies, setMovies] = useState<IMovieData[]>();
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const { results } = await (await fetch(`/api/movies`)).json();
-	// 		setMovies(results);
-	// 	})();
-	// }, []);
+	const router = useRouter();
+	// Navigating 1. Link  2. router.push
+	const onClick = (id: number) => {
+		router.push(`/movies/${id}`);
+	};
 	return (
 		<div className="container">
 			<Seo title="Home" />
 			{!movies && <h4>Loading</h4>}
 			{movies?.map((movie: IMovieProps) => (
-				<div className="movie" key={movie.id}>
-					<img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
-					<h4>{movie.original_title}</h4>
-				</div>
+				<Link href={`/movies/${movie.id}`} key={movie.id}>
+					<div onClick={() => onClick(movie.id)} className="movie">
+						<img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+						<h4>{movie.original_title}</h4>
+					</div>
+				</Link>
 			))}
 			<style jsx>{`
 				.container {
